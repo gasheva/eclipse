@@ -3,11 +3,11 @@
       <div class="row">
         <div class="input-field col s6">
           <select ref="select" v-model="selected" @change="onChangeLeft">
-            <option :value="mainCurrency.CharCode" selected>
-              {{mainCurrency.CharCode}}
+            <option :value="currencies[0].CharCode" selected>
+              {{currencies[0].CharCode}}
             </option>
             <option
-              v-for="currency in currencies"
+              v-for="currency in currencies.slice(1)"
               :key="currency.CharCode"
               :value="currency.CharCode"
             >
@@ -37,30 +37,34 @@
 
 <script>
 import M from "materialize-css";
-import swapMixin from "../../mixins/swap.mixin";
 import { required, minValue } from "vuelidate/lib/validators";
 export default {
   props:{
     currencies: [],
-    mainCurrency: null,
     disabledSelect: null,
+    selected: null,
+    computedNominal: null,
+  },
+  data(){
+    return{
+      left: null,
+	  select: null
+    }
   },
   computed:{
     nominal:{
-      get(){return this.left.Nominal},
-      set(val){this.left.Nominal = val}
+      get(){return this.computedNominal?this.computedNominal:this.left.Nominal},
+      set(val){this.left.Nominal = val; this.onChangeLeft();}
     }, 
     title(){
       return this.left.Name;
     }
   },
-  mixins: [swapMixin],
   validations: {
     nominal: { required, minValue: minValue(1) },
   },
   created(){
-    this.setup(this.mainCurrency, this.currencies[0]);
-    this.selected = this.left.CharCode;
+    this.left = this.currencies.find(cur=>cur.CharCode === this.selected);
   },
   mounted() {
     setTimeout(() => {
@@ -73,9 +77,12 @@ export default {
   },
   methods:{
     onChangeLeft(){
-      console.log('onChangeLeft');
+      console.log('onChangeCard');
       console.log(this.selected);
-      this.$emit('changed', {selected: this.selected, nominal: this.nominal})
+      console.log(this.nominal);
+      const chosen = Object.assign({},this.currencies.find(cur=>cur.CharCode===this.selected));
+      this.left = {Name:chosen.Name, CharCode: this.selected, Nominal:this.nominal, Value: chosen.Value};
+      this.$emit('changed', this.left)
     }
   }
 };

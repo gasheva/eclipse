@@ -1,20 +1,23 @@
 <template>
   <div class="row">
-    <h1>Converter</h1>
+    <h3>Конвертер</h3>
     <converter-card :currencies="currencies" 
-    :mainCurrency="left" 
+    :selected="left.CharCode" 
     :disabledSelect="false"
     @changed="onChangeLeft"
+    :key="counter"
     />
-    <div class="col s2 text-left">
+    <div class="text-left">
       <a href="" @click.prevent="swapCurrencies">
         <i class="material-icons">swap_horiz</i>
       </a>
     </div>
     <converter-card :currencies="currencies" 
-    :mainCurrency="mainCurrency" 
+    :selected="right.CharCode" 
     :disabledSelect="false"
-    @changed="onChangeLeft"
+    :computedNominal="right.Nominal"
+    @changed="onChangeRight"
+    :key="counter"
     />
   </div>
 </template>
@@ -29,10 +32,10 @@ export default {
       currencies: [
         {
           CharCode: "RUB",
-        Nominal: 1,
-        Name: "Российский рубль",
-        Value: 1,
-        Previous: 1,
+          Nominal: 1,
+          Name: "Российский рубль",
+          Value: 1,
+          Previous: 1,
         },
         {
           ID: "R01010",
@@ -61,27 +64,39 @@ export default {
         Previous: 1,
       },
       left: null,
-      right: null
+      right: null,
+      counter: 0    // для оповещения об изменении номинала
     };
   },
   mixins: [swapMixin],
   created(){
     this.left = Object.assign({},this.currencies[0]);
-    this.right = Object.assign({},this.mainCurrency);
+    this.right = Object.assign({}, this.currencies[0]);
   },
   methods:{
     onChangeLeft(val){
       console.log('left value changes');
-      console.log(val);
-      this.left = Object.assign({},this.currencies.find(cur=>cur.CharCode===val.selected) || this.mainCurrency);
-      this.calculateNewRight(
+      this.left = Object.assign({}, val);
+      this.right.Nominal = this.calculateNewRight(
         this.left.Nominal,
         this.left.Value,
         this.right.Value
       );
+      this.counter++;
+    },
+    onChangeRight(val){
+      console.log('right value changes');
+      this.right = Object.assign({}, val);
+      this.right.Nominal = this.calculateNewRight(
+        this.left.Nominal,
+        this.left.Value,
+        this.right.Value
+      );
+      this.counter++;
     },
     swapCurrencies(){
       this.swap();
+      this.counter++;
     }
   }
 };
