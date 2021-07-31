@@ -2,23 +2,24 @@
   <div class="row">
     <h3>Конвертер</h3>
     <div v-if="!loading">
-      <converter-card :currencies="currencies" 
-      :selected="left.CharCode" 
+      <converter-card 
+      :inititalCurrency="left"
+      :currencies="currencies" 
       :readOnly="false"
       @changed="onChangeLeft"
-      :key="'sw'+swapCounter"
+      :key="'l'+triggerLeft"
       />
       <div class="text-left">
         <a href="" @click.prevent="swapCurrencies">
           <i class="material-icons white-text">swap_horiz</i>
         </a>
       </div>
-      <converter-card :currencies="currencies" 
-      :selected="right.CharCode" 
-      :computedNominal="right.Nominal"
+      <converter-card 
+      :inititalCurrency="right"
+      :currencies="currencies" 
       :readOnly="'readonly'"
       @changed="onChangeRight"
-      :key="counter"
+      :key="'r'+triggerRight"
       />
     </div>
     <loader v-else/>
@@ -34,11 +35,9 @@ export default {
     return {
       loading: true,
       currencies: null, // списко всех валют
-      mainCurrency: null,
-      left: null,   // главная валюта
-      right: null,  // второстепенная валюта
-      counter: 0,    // для оповещения об изменении номинала
-      swapCounter: 0
+      left: null,
+      triggerRight: 0,
+      triggerLeft: 0
     };
   },
   mixins: [swapMixin],
@@ -46,37 +45,43 @@ export default {
     await this.$store.dispatch('updateCurrencies');
     this.currencies = this.$store.getters.currencies;
     if(this.currencies){
-      this.mainCurrency = this.$store.getters.RUR;  // по умолчанию основная валюта - рубль
+      this.left = this.$store.getters.RUR;  // по умолчанию обе валюты - рубль
+      this.right = this.$store.getters.RUR;
       this.loading = false;
     }
-    this.left = Object.assign({},this.currencies[0]);
-    this.right = Object.assign({}, this.currencies[0]);
   },
   methods:{
     onChangeLeft(val){
       console.log('left value changes');
-      this.left = Object.assign({}, val);
+      this.left = val;
+      console.log(this.left);
       this.right.Nominal = this.calculateNewRight(
         this.left.Nominal,
         this.left.Value,
         this.right.Value
       );
-      this.counter++;   //триггер для обновления дочернего элемента
+      this.triggerRight++;
     },
     onChangeRight(val){
       console.log('right value changes');
-      this.right = Object.assign({}, val);
+      this.right = val;
+      console.log(this.right);
       this.right.Nominal = this.calculateNewRight(
         this.left.Nominal,
         this.left.Value,
         this.right.Value
       );
-      this.counter++;
+      this.triggerRight++;
     },
     swapCurrencies(){
       this.swap();
-      this.counter++;
-      this.swapCounter++;
+      console.log('this.right');
+      console.log(this.right);
+      console.log('this.left');
+      console.log(this.left);
+      this.triggerLeft++;
+      this.triggerRight++;
+      
     }
   }
 };
