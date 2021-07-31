@@ -2,7 +2,7 @@
   <card :title="secondCurrency.Name">
     <div class="row">
       <div class="col s2 text-left">
-        {{ left | currency }}
+        {{ left | currency(true) }}
       </div>
       <div class="col s2 text-left">
         <a href="" @click.prevent="swapCurrencies">
@@ -10,10 +10,10 @@
         </a>
       </div>
       <div class="col s2 text-left">
-        {{ right | currency }}
+        {{ right | currency(true) }}
       </div>
       <div class="col s6 text-right" :class="[trend.color]">
-        {{ trend.val }}
+        {{trend.arrow}}{{ trend | currency }}
       </div>
     </div>
   </card>
@@ -28,12 +28,13 @@ export default {
   },
   mixins: [swapMixin],
   computed: {
+    // тренд цены
     trend() {
       const dif = Math.abs(this.left.Value - this.left.Previous);
       if (this.left.Value > this.left.Previous)
-        return { val: dif + " ▲", color: "green-text" };
+        return { Nominal: dif, arrow: " ▲", color: "green-text" };
       if (this.left.Value < this.left.Previous)
-        return { val: dif + " ▼", color: "red-text" };
+        return { Nominal: dif, arrow: " ▼", color: "red-text" };
       return "";
     },
   },

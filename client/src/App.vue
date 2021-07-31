@@ -1,28 +1,43 @@
 <template>
   <div id="app">
-    <navbar/>
+    <navbar />
     <main>
-      <router-view/>
+      <router-view />
     </main>
     <footer>
-      <footbar/>
+      <footbar />
     </footer>
   </div>
 </template>
 
 <script>
-import Navbar from './components/app/Navbar.vue'
-import Footbar from './components/app/Footbar.vue'
+import Navbar from "./components/app/Navbar.vue";
+import Footbar from "./components/app/Footbar.vue";
+import messages from "./plugins/messages";
 export default {
-  components:{Navbar, Footbar},
-}
+  components: { Navbar, Footbar },
+  computed: {
+    error() {
+      return this.$store.getters.error;
+    },
+  },
+  watch: {
+    // отслеживание ошибок
+    error(err) {
+      if (!err) return;
+      // показ ошибки при помощи плагина
+      this.$error(messages[err] || "Что-то пошло не так");
+      this.$store.commit("CLEAR_ERROR");
+    },
+  },
+};
 </script>
 
 <style>
-body{
+body {
   background-color: teal;
 }
-main{
+main {
   flex: 1 0 auto;
 }
 #app {
