@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <h3>Валюты</h3>
     <div v-if="!loading">
       <div class="row">
         <div class="col s12">
