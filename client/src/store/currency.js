@@ -3,10 +3,18 @@ export default{
   state:{
     currencies: JSON.parse(sessionStorage.getItem('currencies')),
     lastDateUpdate: sessionStorage.getItem('lastDateUpdate'),
+    RUR: {
+      CharCode: "RUR",
+      Nominal: 1,
+      Name: "Российский рубль",
+      Value: 1,
+      Previous: 1,
+    }
   },
   getters:{
     currencies: state => state.currencies,
-    lastDateUpdate: state => state.lastDateUpdate
+    lastDateUpdate: state => state.lastDateUpdate,
+    RUR: state => state.RUR
   },
   mutations:{
     SET_LAST_DATE(state, date){
@@ -16,6 +24,7 @@ export default{
     SET_CURRENCIES(state, currencies){
       sessionStorage.setItem('currencies', JSON.stringify(currencies));
       state.currencies = currencies;
+      state.currencies.unshift(state.RUR);
     },
     CLEAR_CACHE(state){
       sessionStorage.removeItem('currencies');

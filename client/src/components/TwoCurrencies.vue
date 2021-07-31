@@ -5,11 +5,6 @@
         {{ left | currency(true) }}
       </div>
       <div class="col s2 text-left">
-        <a href="" @click.prevent="swapCurrencies">
-          <i class="material-icons">swap_horiz</i>
-        </a>
-      </div>
-      <div class="col s2 text-left">
         {{ right | currency(true) }}
       </div>
       <div class="col s6 text-right" :class="[trend.color]">
@@ -30,6 +25,7 @@ export default {
   computed: {
     // тренд цены
     trend() {
+      //TODO(добавить относительно основной валюты)
       const dif = Math.abs(this.left.Value - this.left.Previous);
       if (this.left.Value > this.left.Previous)
         return { Nominal: dif, arrow: " ▲", color: "green-text" };
@@ -40,11 +36,6 @@ export default {
   },
   created() {
     this.setup(this.mainCurrency, this.secondCurrency);
-  },
-  methods: {
-    swapCurrencies() {
-      this.swap();
-    },
   },
 };
 </script>
