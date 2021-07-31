@@ -34,9 +34,8 @@ export default {
   data() {
     return {
       loading: true,
-      currencies: null, // списко всех валют
-      left: null,
-      triggerRight: 0,
+      currencies: null,
+      triggerRight: 0,  // триггер обновления дочернего компонента
       triggerLeft: 0
     };
   },
@@ -54,7 +53,6 @@ export default {
     onChangeLeft(val){
       console.log('left value changes');
       this.left = val;
-      console.log(this.left);
       this.right.Nominal = this.calculateNewRight(
         this.left.Nominal,
         this.left.Value,
@@ -65,7 +63,6 @@ export default {
     onChangeRight(val){
       console.log('right value changes');
       this.right = val;
-      console.log(this.right);
       this.right.Nominal = this.calculateNewRight(
         this.left.Nominal,
         this.left.Value,
@@ -75,10 +72,6 @@ export default {
     },
     swapCurrencies(){
       this.swap();
-      console.log('this.right');
-      console.log(this.right);
-      console.log('this.left');
-      console.log(this.left);
       this.triggerLeft++;
       this.triggerRight++;
       

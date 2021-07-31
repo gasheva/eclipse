@@ -67,6 +67,7 @@ export default {
     nominal: { required, minValue: minValue(1) },
   },
   created() {
+    // копируем переданный объект, чтобы изменения не отражались на родительском объекте
     this.currency = Object.assign({},this.inititalCurrency),
     this.selected = this.currency.CharCode;
   },
@@ -85,6 +86,7 @@ export default {
       const nominal = this.nominal;
       this.currency = Object.assign({},this.currencies.find(cur=>cur.CharCode===this.selected));
       this.currency.Nominal = nominal;
+      // передаем новый объект
       this.$emit("changed", Object.assign({}, this.currency));
     },
   },
