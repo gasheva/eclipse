@@ -40,12 +40,13 @@ export default {
     }
   },
   mounted(){
-    this.searchHandler(this.search);
+    this.searchHandler(this.search);  // фильтрация
     setTimeout(()=> {
       M.updateTextFields();
     })
   },
   watch:{
+    // сохранение запроса в url
     search:function(val){
       if (val !== "") {
         this.$router.push({
@@ -55,6 +56,7 @@ export default {
         this.$router.push({ query: {} });
       }
     },
+    // отслеживание измнения url
     "$route.query.search":{
       handler:function(val){
         this.searchHandler(val);
@@ -64,7 +66,7 @@ export default {
   methods:{
     searchHandler(val){
       if(!val){
-        this.items = this.currencies;
+        this.items = this.currencies; // вывод всех пар
       }else{
         let pattern = new RegExp(`${val}`, 'i');
         this.items = this.currencies.filter(cur=>pattern.test(cur.Name) || pattern.test(cur.CharCode));

@@ -7,6 +7,7 @@ export default{
   },
   methods:{
     setup(left, right){
+      // валюта слева - основная, справа - вычисляемая
       this.left = Object.assign({},left);
       this.left.Nominal = 1;
       console.log(this.left.Nominal);
@@ -25,6 +26,7 @@ export default{
       this.left.Nominal = leftNominal;  // присваиваем старый номинал слева
       this.right.Nominal = newRightNominal; // присваиваем справа новый номинал
     },
+    // вычисление нового номинала валюты справа
     calculateNewRight(leftNominal, leftValue, rightValue){
       return leftNominal*leftValue/rightValue;
     }

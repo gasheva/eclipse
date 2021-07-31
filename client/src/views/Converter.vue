@@ -1,24 +1,27 @@
 <template>
   <div class="row">
     <h3>Конвертер</h3>
-    <converter-card :currencies="currencies" 
-    :selected="left.CharCode" 
-    :disabledSelect="false"
-    @changed="onChangeLeft"
-    :key="counter"
-    />
-    <div class="text-left">
-      <a href="" @click.prevent="swapCurrencies">
-        <i class="material-icons">swap_horiz</i>
-      </a>
+    <div v-if="!loading">
+      <converter-card :currencies="currencies" 
+      :selected="left.CharCode" 
+      :disabledSelect="false"
+      @changed="onChangeLeft"
+      :key="left.CharCode"
+      />
+      <div class="text-left">
+        <a href="" @click.prevent="swapCurrencies">
+          <i class="material-icons">swap_horiz</i>
+        </a>
+      </div>
+      <converter-card :currencies="currencies" 
+      :selected="right.CharCode" 
+      :disabledSelect="false"
+      :computedNominal="right.Nominal"
+      @changed="onChangeRight"
+      :key="right.CharCode+counter"
+      />
     </div>
-    <converter-card :currencies="currencies" 
-    :selected="right.CharCode" 
-    :disabledSelect="false"
-    :computedNominal="right.Nominal"
-    @changed="onChangeRight"
-    :key="counter"
-    />
+    <loader v-else/>
   </div>
 </template>
 
@@ -29,40 +32,9 @@ export default {
   components:{ConverterCard},
   data() {
     return {
-      currencies: [
-        {
-          CharCode: "RUB",
-          Nominal: 1,
-          Name: "Российский рубль",
-          Value: 1,
-          Previous: 1,
-        },
-        {
-          ID: "R01010",
-          NumCode: "036",
-          CharCode: "AUD",
-          Nominal: 1,
-          Name: "Австралийский доллар",
-          Value: 54.1609,
-          Previous: 54.073,
-        },
-        {
-          ID: "R01020A",
-          NumCode: "944",
-          CharCode: "AZN",
-          Nominal: 1,
-          Name: "Азербайджанский манат",
-          Value: 43.0785,
-          Previous: 43.3248,
-        },
-      ],
-      mainCurrency: {
-        CharCode: "RUB",
-        Nominal: 1,
-        Name: "Российский рубль",
-        Value: 1,
-        Previous: 1,
-      },
+      loading: true,
+      currencies: null,
+      mainCurrency: null,
       left: null,
       right: null,
       counter: 0    // для оповещения об изменении номинала
@@ -70,6 +42,12 @@ export default {
   },
   mixins: [swapMixin],
   created(){
+    this.$store.dispatch('updateCurrencies');
+    this.currencies = this.$store.getters.currencies;
+    if(this.currencies){
+      this.mainCurrency = this.$store.getters.RUR;  // по умолчанию основная валюта - рубль
+      this.loading = false;
+    }
     this.left = Object.assign({},this.currencies[0]);
     this.right = Object.assign({}, this.currencies[0]);
   },
@@ -82,7 +60,7 @@ export default {
         this.left.Value,
         this.right.Value
       );
-      this.counter++;
+      this.counter++;   //триггер для обновления дочернего элемента
     },
     onChangeRight(val){
       console.log('right value changes');
