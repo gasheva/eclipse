@@ -33,8 +33,8 @@ export default {
       counter: 0
     }
   },
-  mounted(){
-    this.$store.dispatch('updateCurrencies');
+  async mounted(){
+    await this.$store.dispatch('updateCurrencies');
     this.currencies = this.$store.getters.currencies;
     if(this.currencies){
       let data = {};

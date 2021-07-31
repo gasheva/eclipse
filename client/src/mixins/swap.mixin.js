@@ -19,6 +19,7 @@ export default{
       // номинал справа после обмена
       const newRightNominal = this.calculateNewRight(this.left.Nominal, this.right.Value, this.left.Value);
       const leftNominal = this.left.Nominal;  // сохраняем номинал слева
+      console.log('leftNominal');
       // обмениваем значения
       const temp = Object.assign({},this.left);
       this.left = Object.assign({},this.right);
@@ -28,6 +29,8 @@ export default{
     },
     // вычисление нового номинала валюты справа
     calculateNewRight(leftNominal, leftValue, rightValue){
+      console.log('calculateNewRight leftNominal=' + leftNominal);
+      if(!leftNominal) return 1;
       return leftNominal*leftValue/rightValue;
     }
   }

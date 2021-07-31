@@ -22,6 +22,7 @@
           type="number"
           v-model.number="nominal"
           :class="{ invalid: $v.nominal.$error }"
+          :readonly = "readOnly"
         />
         <span
           class="helper-text invalid"
@@ -41,7 +42,7 @@ import { required, minValue } from "vuelidate/lib/validators";
 export default {
   props: {
     currencies: [],
-    disabledSelect: null,
+    readOnly: null,
     selected: null,
     computedNominal: null,
   },
@@ -83,8 +84,6 @@ export default {
   methods: {
     onChangeLeft() {
       console.log("onChangeCard");
-      console.log(this.selected);
-      console.log(this.nominal);
       const chosen = Object.assign(
         {},
         this.currencies.find((cur) => cur.CharCode === this.selected)

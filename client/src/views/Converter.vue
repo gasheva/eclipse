@@ -4,21 +4,21 @@
     <div v-if="!loading">
       <converter-card :currencies="currencies" 
       :selected="left.CharCode" 
-      :disabledSelect="false"
+      :readOnly="false"
       @changed="onChangeLeft"
-      :key="left.CharCode"
+      :key="'sw'+swapCounter"
       />
       <div class="text-left">
         <a href="" @click.prevent="swapCurrencies">
-          <i class="material-icons">swap_horiz</i>
+          <i class="material-icons white-text">swap_horiz</i>
         </a>
       </div>
       <converter-card :currencies="currencies" 
       :selected="right.CharCode" 
-      :disabledSelect="false"
       :computedNominal="right.Nominal"
+      :readOnly="'readonly'"
       @changed="onChangeRight"
-      :key="right.CharCode+counter"
+      :key="counter"
       />
     </div>
     <loader v-else/>
@@ -33,16 +33,17 @@ export default {
   data() {
     return {
       loading: true,
-      currencies: null,
+      currencies: null, // списко всех валют
       mainCurrency: null,
-      left: null,
-      right: null,
-      counter: 0    // для оповещения об изменении номинала
+      left: null,   // главная валюта
+      right: null,  // второстепенная валюта
+      counter: 0,    // для оповещения об изменении номинала
+      swapCounter: 0
     };
   },
   mixins: [swapMixin],
-  created(){
-    this.$store.dispatch('updateCurrencies');
+  async created(){
+    await this.$store.dispatch('updateCurrencies');
     this.currencies = this.$store.getters.currencies;
     if(this.currencies){
       this.mainCurrency = this.$store.getters.RUR;  // по умолчанию основная валюта - рубль
@@ -75,6 +76,7 @@ export default {
     swapCurrencies(){
       this.swap();
       this.counter++;
+      this.swapCounter++;
     }
   }
 };
