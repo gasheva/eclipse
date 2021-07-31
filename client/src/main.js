@@ -9,11 +9,14 @@ import Loader from './components/app/Loader'
 
 import currencyFilter from './filters/currency.filter'
 
+import msgPlugin from './plugins/message.plugin';
+
 import 'materialize-css/dist/css/materialize.min.css'
 
 Vue.config.productionTip = false
 
 Vue.use(Vuelidate);
+Vue.use(msgPlugin);
 Vue.filter('currency', currencyFilter);
 Vue.component('card', Card);
 Vue.component('Loader', Loader);

@@ -16,6 +16,12 @@
       <currencies-table :currencies="currencies" :mainCurrency="mainCurrency" :key="counter"/>
     </div>
     <loader v-else/>
+
+    <div class="fixed-action-btn">
+      <a href="" class="btn-floating btn-large red darken-4" @click.prevent="scrollToTop">
+        <i class="large material-icons">arrow_upward</i>
+      </a>
+    </div>
   </div>
 </template>
 
@@ -67,6 +73,9 @@ export default {
       console.log(val);
       this.mainCurrency = this.currencies.find(cur=>cur.CharCode === val || cur.Name === val);
       this.counter++;   // триггер обновления таблицы
+    },
+    scrollToTop(){
+      window.scrollTo(0,0);
     }
   }
 

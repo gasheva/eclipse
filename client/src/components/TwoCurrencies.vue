@@ -5,6 +5,9 @@
         {{ left | currency(true) }}
       </div>
       <div class="col s2 text-left">
+        ↔
+      </div>
+      <div class="col s2 text-left">
         {{ right | currency(true) }}
       </div>
       <div class="col s6 text-right" :class="[trend.color]">
