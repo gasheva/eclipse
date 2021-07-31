@@ -35,18 +35,27 @@ export default {
   },
   data(){
     return{
-      search:'',
+      search:this.$route.query.search || "",
       items: []
     }
   },
   mounted(){
-    this.items = this.currencies;
+    this.searchHandler(this.search);
     setTimeout(()=> {
       M.updateTextFields();
     })
   },
   watch:{
-    search:{
+    search:function(val){
+      if (val !== "") {
+        this.$router.push({
+          query: { ...this.$route.query, search: `${val}` },
+        });
+      } else {
+        this.$router.push({ query: {} });
+      }
+    },
+    "$route.query.search":{
       handler:function(val){
         this.searchHandler(val);
       }
@@ -54,7 +63,6 @@ export default {
   },
   methods:{
     searchHandler(val){
-      console.log(val);
       if(!val){
         this.items = this.currencies;
       }else{
