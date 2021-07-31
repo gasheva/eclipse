@@ -22,9 +22,9 @@ export default{
       state.lastDateUpdate = date;
     },
     SET_CURRENCIES(state, currencies){
+      currencies.unshift(state.RUR);
       sessionStorage.setItem('currencies', JSON.stringify(currencies));
       state.currencies = currencies;
-      state.currencies.unshift(state.RUR);
     },
     CLEAR_CACHE(state){
       sessionStorage.removeItem('currencies');

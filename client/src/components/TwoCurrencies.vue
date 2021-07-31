@@ -23,14 +23,17 @@ export default {
   },
   mixins: [swapMixin],
   computed: {
-    // тренд цены
+    // тренд цены относительно основной валюты через рубли
     trend() {
-      //TODO(добавить относительно основной валюты)
-      const dif = Math.abs(this.left.Value - this.left.Previous);
-      if (this.left.Value > this.left.Previous)
+      const rightToLeftNew = this.right.Value/this.left.Value;
+      const rightToLeftOld = this.right.Previous/this.left.Previous;
+
+      const dif = rightToLeftNew - rightToLeftOld;
+
+      if (dif>0)
         return { Nominal: dif, arrow: " ▲", color: "green-text" };
-      if (this.left.Value < this.left.Previous)
-        return { Nominal: dif, arrow: " ▼", color: "red-text" };
+      if (dif<0)
+        return { Nominal: Math.abs(dif), arrow: " ▼", color: "red-text" };
       return "";
     },
   },

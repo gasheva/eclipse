@@ -12,9 +12,7 @@
           </div>
         </div>
       </div>
-        
-
-      <currencies-table :currencies="currencies" :mainCurrency="mainCurrency"/>
+      <currencies-table :currencies="currencies" :mainCurrency="mainCurrency" :key="counter"/>
     </div>
     <loader v-else/>
   </div>
@@ -30,7 +28,8 @@ export default {
       loading: true,
       currencies: null,
       autocomplete: null,
-      mainCurrency: null
+      mainCurrency: null,
+      counter: 0
     }
   },
   mounted(){
@@ -46,8 +45,8 @@ export default {
       setTimeout(() => {
         this.autocomplete = M.Autocomplete.init(this.$refs.autocomplete, {
           data,
-          onAutocomplete: function(val){
-            console.log(val);
+          onAutocomplete: (val)=>{
+            this.searchHandler(val);
           }
         }); 
       });
@@ -61,10 +60,12 @@ export default {
     }
   },
   methods:{
+    // передача 
     searchHandler(val){
       console.log('searchHandler');
       console.log(val);
-      // this.mainCurrency = this.currencies.find(cur=>cur.CharCode === )
+      this.mainCurrency = this.currencies.find(cur=>cur.CharCode === val || cur.Name === val);
+      this.counter++;   // триггер обновления таблицы
     }
   }
 
