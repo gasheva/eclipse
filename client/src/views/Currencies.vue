@@ -82,3 +82,9 @@ export default {
 
 };
 </script>
+
+<style lang="scss">
+.input-field > label {
+    color: $placeholder-text-color;
+}
+</style>

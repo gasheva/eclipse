@@ -5,7 +5,7 @@
                 <div class="row">
                     <div class="input-field col s12">
                         <input
-                            class="input-search"
+                            class="input-search placeholder-override"
                             id="input-search"
                             placeholder="Валюта"
                             v-model.trim="search"

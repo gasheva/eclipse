@@ -1,0 +1,9 @@
+@import "variables";
+.placeholder-override {
+  &::placeholder {
+    color: $placeholder-text-color !important;
+    font-family: $main-font-family;
+    font-size: 15px !important;
+    opacity: 1 !important;
+  }
+}
