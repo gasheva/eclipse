@@ -27,6 +27,7 @@
 <script>
 import M             from 'materialize-css';
 import TwoCurrencies from '@/components/TwoCurrencies.vue';
+import debounce      from 'lodash.debounce';
 
 export default {
     components: {TwoCurrencies},
@@ -57,11 +58,11 @@ export default {
                 this.$router.push({query: {}});
             }
         },
-        // отслеживание измнения url
+        // отслеживание изменения url
         '$route.query.search': {
-            handler: function (val) {
+            handler: debounce(function (val) {
                 this.searchHandler(val);
-            },
+            }, 300),
         },
     },
     methods: {
