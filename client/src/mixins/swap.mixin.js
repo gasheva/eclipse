@@ -9,12 +9,12 @@ export default {
         setup(mainCurrency, calculatedCurrency) {
             this.mainCurrency         = Object.assign({}, mainCurrency);
             this.mainCurrency.Nominal = 1;
-            console.log(this.mainCurrency.Nominal);
+            this.$log(this.mainCurrency.Nominal);
             this.calculatedCurrency         = Object.assign({}, calculatedCurrency);
             this.calculatedCurrency.Nominal = this.calculate(this.mainCurrency.Nominal, this.mainCurrency.Value, this.calculatedCurrency.Value);
         },
         swap() {
-            console.log('swaping');
+            this.$log('swapping')
             // new nominal
             const newCalculatedCurrencyNominal = this.calculate(this.mainCurrency.Nominal, this.calculatedCurrency.Value, this.mainCurrency.Value);
             const mainCurrencyNominal          = this.mainCurrency.Nominal;  // сохраняем номинал слева

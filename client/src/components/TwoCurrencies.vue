@@ -2,13 +2,13 @@
     <card :title="secondCurrency.Name">
         <div class="row">
             <div class="col s2 text-left">
-                {{ left | currency(true) }}
+                {{ mainCurrency | currency(true) }}
             </div>
             <div class="col s2 text-left">
                 ↔
             </div>
             <div class="col s2 text-left">
-                {{ right | currency(true) }}
+                {{ calculatedCurrency | currency(true) }}
             </div>
             <div class="col s6 text-right" :class="[trend.color]">
                 {{ trend.arrow }}{{ trend | currency }}
@@ -23,16 +23,16 @@ import swapMixin from '@/mixins/swap.mixin';
 export default {
     props:    {
         secondCurrency: null,
-        mainCurrency:   null,
+        firstCurrency:  null,
     },
     mixins:   [swapMixin],
     computed: {
         // тренд цены относительно основной валюты через рубли
         trend() {
-            const rightToLeftNew = this.right.Value / this.left.Value;
-            const rightToLeftOld = this.right.Previous / this.left.Previous;
+            const calculatedCurrencyToMainCurrencyNew = this.calculatedCurrency.Value / this.mainCurrency.Value;
+            const calculatedCurrencyToMainCurrencyOld = this.calculatedCurrency.Previous / this.mainCurrency.Previous;
 
-            const dif = rightToLeftNew - rightToLeftOld;
+            const dif = calculatedCurrencyToMainCurrencyNew - calculatedCurrencyToMainCurrencyOld;
 
             if (dif > 0)
                 return {Nominal: dif, arrow: ' ▲', color: 'green-text'};
@@ -42,7 +42,7 @@ export default {
         },
     },
     created() {
-        this.setup(this.mainCurrency, this.secondCurrency);
+        this.setup(this.firstCurrency, this.secondCurrency);
     },
 };
 </script>

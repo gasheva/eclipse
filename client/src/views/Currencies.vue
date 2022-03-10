@@ -71,8 +71,8 @@ export default {
     methods: {
         // передача
         searchHandler(val) {
-            console.log('searchHandler');
-            console.log(val);
+            this.$log('searchHandler');
+            this.$log(val);
             this.mainCurrency = this.currencies.find(cur => cur.CharCode === val || cur.Name === val);
             this.counter++;   // trigger to update table
         },

@@ -17,8 +17,8 @@
         </div>
         <div v-for="currency in items" :key="currency.CharCode">
             <TwoCurrencies
-                :secondCurrency="currency"
-                :mainCurrency="mainCurrency"
+                :second-currency="currency"
+                :first-currency="mainCurrency"
             />
         </div>
     </div>

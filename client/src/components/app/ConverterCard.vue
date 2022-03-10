@@ -83,7 +83,7 @@ export default {
     },
     methods: {
         onChange() {
-            console.log('onChangeCard');
+            this.$log('onChangeCard');
             const nominal         = this.nominal;
             this.currency         = Object.assign({}, this.currencies.find(cur => cur.CharCode === this.selected));
             this.currency.Nominal = nominal;

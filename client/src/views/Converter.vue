@@ -10,7 +10,7 @@
                 @changed="changeValue($event, 'mainCurrency')"
                 :key="'l'+triggerMain"
             />
-            <div class="text-mainCurrency">
+            <div class="text-left">
                 <a href="" @click.prevent="swapCurrencies">
                     <i class="material-icons black-text">swap_horiz</i>
                 </a>
@@ -53,7 +53,7 @@ export default {
     },
     methods: {
         changeValue(event, side) {
-            console.log(`on change ${side}`);
+            this.$log(`on change ${side}`);
             this[side]                      = event;
             this.calculatedCurrency.Nominal = this.calculate(
                 this.mainCurrency.Nominal,
