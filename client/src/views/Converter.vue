@@ -11,7 +11,7 @@
             />
             <div class="text-left">
                 <a href="" @click.prevent="swapCurrencies">
-                    <i class="material-icons white-text">swap_horiz</i>
+                    <i class="material-icons black-text">swap_horiz</i>
                 </a>
             </div>
             <converter-card

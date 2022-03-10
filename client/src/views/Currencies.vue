@@ -6,7 +6,8 @@
                 <div class="col s12">
                     <div class="row">
                         <div class="input-field col s12">
-                            <input type="text" id="autocomplete-input" class="autocomplete" ref="autocomplete">
+                            <input type="text" id="autocomplete-input" class="autocomplete" ref="autocomplete"
+                                   autocomplete="off">
                             <label for="autocomplete-input">Основная валюта</label>
                             <i class="material-icons prefix">search</i>
                         </div>
@@ -45,7 +46,7 @@ export default {
         this.currencies = this.$store.getters.currencies;
         if (this.currencies) {
             let data = {};
-            // создание массива для автокомлита. Поиск по имени и CharCode
+            // create autocomplete array. Search by name and CharCode
             this.currencies.forEach(val => {
                 data[`${val.Name}`]     = '';
                 data[`${val.CharCode}`] = '';
@@ -58,7 +59,7 @@ export default {
                     },
                 });
             });
-            this.mainCurrency = this.$store.getters.RUR;  // по умолчанию основная валюта - рубль
+            this.mainCurrency = this.$store.getters.RUR;  // by default - ruble
             this.loading      = false;
         }
     },
@@ -73,13 +74,12 @@ export default {
             console.log('searchHandler');
             console.log(val);
             this.mainCurrency = this.currencies.find(cur => cur.CharCode === val || cur.Name === val);
-            this.counter++;   // триггер обновления таблицы
+            this.counter++;   // trigger to update table
         },
         scrollToTop() {
             window.scrollTo(0, 0);
         },
     },
-
 };
 </script>
 

@@ -11,9 +11,9 @@
                         <a
                             :href="href"
                             @click="navigate"
-                            class="waves-effect waves-orange pointer"
-                        >Конвертер</a
-                        >
+                            class="waves-effect waves-orange pointer">
+                            Конвертер
+                        </a>
                     </li>
                 </router-link>
                 <router-link
@@ -25,9 +25,9 @@
                         <a
                             :href="href"
                             @click="navigate"
-                            class="waves-effect waves-orange pointer"
-                        >Валюты</a
-                        >
+                            class="waves-effect waves-orange pointer">
+                            Валюты
+                        </a>
                     </li>
                 </router-link>
             </ul>
@@ -35,8 +35,8 @@
     </nav>
 </template>
 
-<style>
+<style lang="scss">
 .navbar {
-    background-color: #212e53;
+    background-color: $navbar-background;
 }
 </style>
