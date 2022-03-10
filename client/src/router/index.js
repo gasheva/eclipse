@@ -7,13 +7,18 @@ const routes = [
     {
         path:      '/',
         name:      'Currencies',
-        component: () => import('@/views/Currencies.vue'),
+        component: () => import(/* webpackChunkName: "currencies" */ '@/views/Currencies.vue'),
     },
     {
         path:      '/converter',
         name:      'Converter',
-        component: () => import('@/views/Converter.vue'),
+        component: () => import(/* webpackChunkName: "converter" */'@/views/Converter.vue'),
     },
+    {
+        path:     '/*',
+        redirect: () => '/',
+    },
+
 ];
 
 const router = new VueRouter({
