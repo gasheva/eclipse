@@ -3,10 +3,11 @@
         <h3>Конвертер</h3>
         <div v-if="!loading">
             <converter-card
+                :currency-id="left.id"
                 :inititalCurrency="left"
                 :currencies="currencies"
                 :readOnly="false"
-                @changed="onChangeLeft"
+                @changed="changeValue($event, 'left')"
                 :key="'l'+triggerLeft"
             />
             <div class="text-left">
@@ -14,11 +15,13 @@
                     <i class="material-icons black-text">swap_horiz</i>
                 </a>
             </div>
+            {{right.id}}
             <converter-card
+                :currency-id="right.id"
                 :inititalCurrency="right"
                 :currencies="currencies"
                 :readOnly="'readonly'"
-                @changed="onChangeRight"
+                @changed="changeValue($event, 'right')"
                 :key="'r'+triggerRight"
             />
         </div>
@@ -32,6 +35,7 @@ import swapMixin     from '@/mixins/swap.mixin';
 
 export default {
     components: {ConverterCard},
+    mixins:     [swapMixin],
     data() {
         return {
             loading:      true,
@@ -40,30 +44,18 @@ export default {
             triggerLeft:  0,
         };
     },
-    mixins: [swapMixin],
     async created() {
         await this.$store.dispatch('updateCurrencies');
         this.currencies = this.$store.getters.currencies;
         if (this.currencies) {
-            this.left    = this.$store.getters.RUR;  // по умолчанию обе валюты - рубль
-            this.right   = this.$store.getters.RUR;
+            this.setup(this.$store.getters.RUR, this.$store.getters.RUR)
             this.loading = false;
         }
     },
     methods: {
-        onChangeLeft(val) {
-            console.log('left value changes');
-            this.left          = val;
-            this.right.Nominal = this.calculateNewRight(
-                this.left.Nominal,
-                this.left.Value,
-                this.right.Value,
-            );
-            this.triggerRight++;
-        },
-        onChangeRight(val) {
-            console.log('right value changes');
-            this.right         = val;
+        changeValue(event, side) {
+            console.log(`on change ${side}`);
+            this[side]         = event;
             this.right.Nominal = this.calculateNewRight(
                 this.left.Nominal,
                 this.left.Value,
