@@ -3,26 +3,25 @@
         <h3>Конвертер</h3>
         <div v-if="!loading">
             <converter-card
-                :currency-id="left.id"
-                :inititalCurrency="left"
+                :currency-id="mainCurrency.id"
+                :inititalCurrency="mainCurrency"
                 :currencies="currencies"
                 :readOnly="false"
-                @changed="changeValue($event, 'left')"
-                :key="'l'+triggerLeft"
+                @changed="changeValue($event, 'mainCurrency')"
+                :key="'l'+triggerMain"
             />
-            <div class="text-left">
+            <div class="text-mainCurrency">
                 <a href="" @click.prevent="swapCurrencies">
                     <i class="material-icons black-text">swap_horiz</i>
                 </a>
             </div>
-            {{right.id}}
             <converter-card
-                :currency-id="right.id"
-                :inititalCurrency="right"
+                :currency-id="calculatedCurrency.id"
+                :inititalCurrency="calculatedCurrency"
                 :currencies="currencies"
                 :readOnly="'readonly'"
-                @changed="changeValue($event, 'right')"
-                :key="'r'+triggerRight"
+                @changed="changeValue($event, 'calculatedCurrency')"
+                :key="'r'+triggerCalculated"
             />
         </div>
         <loader v-else/>
@@ -38,35 +37,35 @@ export default {
     mixins:     [swapMixin],
     data() {
         return {
-            loading:      true,
-            currencies:   null,
-            triggerRight: 0,  // триггер обновления дочернего компонента
-            triggerLeft:  0,
+            loading:           true,
+            currencies:        null,
+            triggerCalculated: 0,  // trigger to update child component
+            triggerMain:       0,
         };
     },
     async created() {
         await this.$store.dispatch('updateCurrencies');
         this.currencies = this.$store.getters.currencies;
         if (this.currencies) {
-            this.setup(this.$store.getters.RUR, this.$store.getters.RUR)
+            this.setup(this.$store.getters.RUR, this.$store.getters.RUR);
             this.loading = false;
         }
     },
     methods: {
         changeValue(event, side) {
             console.log(`on change ${side}`);
-            this[side]         = event;
-            this.right.Nominal = this.calculateNewRight(
-                this.left.Nominal,
-                this.left.Value,
-                this.right.Value,
+            this[side]                      = event;
+            this.calculatedCurrency.Nominal = this.calculate(
+                this.mainCurrency.Nominal,
+                this.mainCurrency.Value,
+                this.calculatedCurrency.Value,
             );
-            this.triggerRight++;
+            this.triggerCalculated++;
         },
         swapCurrencies() {
             this.swap();
-            this.triggerLeft++;
-            this.triggerRight++;
+            this.triggerMain++;
+            this.triggerCalculated++;
 
         },
     },
