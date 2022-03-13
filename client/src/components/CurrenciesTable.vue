@@ -32,8 +32,14 @@ import debounce      from 'lodash.debounce';
 export default {
     components: {TwoCurrencies},
     props:      {
-        currencies:   null,
-        mainCurrency: null,
+        currencies:   {
+            type:    Array,
+            default: () => [],
+        },
+        mainCurrency: {
+            type:    Object,
+            default: () => null,
+        },
     },
     data() {
         return {

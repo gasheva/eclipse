@@ -1,7 +1,7 @@
-<template>
+<template functional>
     <div class="container">
         <div class="card-content white">
-            <p class="card-title">{{ title }}</p>
+            <p class="card-title">{{ props.title }}</p>
             <slot/>
         </div>
     </div>
@@ -9,7 +9,12 @@
 
 <script>
 export default {
-    props: ['title'],
+    props: {
+        title: {
+            type:     String,
+            required: true,
+        },
+    },
 };
 </script>
 

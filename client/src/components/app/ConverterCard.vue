@@ -39,9 +39,18 @@ import {required, minValue} from 'vuelidate/lib/validators';
 
 export default {
     props: {
-        readOnly:         null,
-        inititalCurrency: null,
-        currencies:       null,
+        readOnly:         {
+            type:    Boolean,
+            default: () => false,
+        },
+        inititalCurrency: {
+            type:    Object,
+            default: () => null,
+        },
+        currencies:       {
+            type:    Array,
+            default: () => [],
+        },
     },
     data() {
         return {

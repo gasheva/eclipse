@@ -22,8 +22,14 @@ import swapMixin from '@/mixins/swap.mixin';
 
 export default {
     props:    {
-        secondCurrency: null,
-        firstCurrency:  null,
+        secondCurrency: {
+            type: Object,
+            required: true,
+        },
+        firstCurrency: {
+            type: Object,
+            required: true,
+        },
     },
     mixins:   [swapMixin],
     computed: {
